@@ -1,0 +1,85 @@
+<!Doctype html>
+<html>
+
+<script src="/socket.io/socket.io.js"></script>
+
+ <script src="http://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
+
+<script>
+	var socket = io.connect('http://localhost:3000');
+          // initial loading
+		  // => arrow functions donot create this key word that refers to this input filed
+		  // donot create this event unlike regular events
+	     $(  ()=>{       
+                        //when send button is clicked pointed by datasend 
+						// get message as input in id data==message
+						//and emit sendmessage along with parameter message&empty the value 
+	                 	$('#datasend').click( ()=> { 
+					    var message = $('#data').val(); 
+						 socket.emit('sendmessage', message);	
+						 $('#data').val('');
+	                	});
+						
+
+						//enter to send message
+	// => arrow functions donot create this key word that refers to this input filed
+	// donot create this event unlike regular events
+		               $('#data').keypress(function(event) {
+		            	if(event.which ==13){
+			        	$(this).blur();
+			        	$('#datasend').focus().click();	        	
+		               	}
+		                }); 
+	});
+
+
+
+
+//when connection is obtained emit the newuser to server by value as his name
+	socket.on('connect', ()=>{
+		socket.emit('newuser', prompt("What is your name?"));
+	});
+
+	// when server emit chat along with parameters username and data
+	//write into html page 
+	socket.on('chat', function (username, data) {
+		$('#chatboard').append('<b>'+username + ':</b> ' + data + '<br>');
+	});
+
+	socket.on('newu', function (username) {
+		$('#ncu').append('<b> &nbsp '+ username + '</b><br>');
+	});
+
+	// listener, whenever the server emits 'updateusers', this updates the username list
+	//on emit of updateusers with usernames[] as paramater==data
+	//empty the users stream then loop the array
+	socket.on('updateusers', function(data) {
+		$('#users').empty();
+		var i=0;
+		$.each(data, function(data) {
+			i++;
+		$('#users').append('<b>'+  i+ '&nbsp '+ data + '</b><br>' );
+		});
+	});
+</script>
+
+
+<head>
+<div style="float:left;height:500px;width:100px;border-right:5px solid red;">
+	<b>USERS</b>
+	<div id="users"></div>
+</div>
+<div style="float:left;height:500px;width:400px;border-right:5px solid green;">
+	<div id="chatboard"></div>
+	<input  id="data" style="width:300px;border:2px solid blue;" />
+	<input type="button" id="datasend" value="send" />
+</div>
+<div style="float:left;width:300px;border-right:5px solid black;height:500px;">
+	<b>  &nbsp NEWLY CONNECTED USERS</b>
+	<div id="ncu"></div>
+</div>
+
+</head>
+</html>
