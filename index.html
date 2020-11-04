@@ -9,29 +9,29 @@
 
 <script>
 	var socket = io.connect('http://localhost:3000');
-          // initial loading
-		  // => arrow functions donot create this key word that refers to this input filed
-		  // donot create this event unlike regular events
-	     $(  ()=>{       
-                        //when send button is clicked pointed by datasend 
-						// get message as input in id data==message
-						//and emit sendmessage along with parameter message&empty the value 
-	                 	$('#datasend').click( ()=> { 
-					    var message = $('#data').val(); 
-						 socket.emit('sendmessage', message);	
-						 $('#data').val('');
-	                	});
+					// initial loading
+					// => arrow functions donot create this key word that refers to this input filed
+					// donot create this event unlike regular events
+	$(  ()=>{       
+		//when send button is clicked pointed by datasend 
+		// get message as input in id data==message
+		//and emit sendmessage along with parameter message&empty the value 
+		$('#datasend').click( ()=> { 
+		var message = $('#data').val(); 
+			socket.emit('sendmessage', message);	
+			$('#data').val('');
+		});
 						
 
-						//enter to send message
+	//enter to send message
 	// => arrow functions donot create this key word that refers to this input filed
 	// donot create this event unlike regular events
-		               $('#data').keypress(function(event) {
-		            	if(event.which ==13){
-			        	$(this).blur();
-			        	$('#datasend').focus().click();	        	
-		               	}
-		                }); 
+	$('#data').keypress(function(event) {
+		if(event.which ==13){
+		$(this).blur();
+		$('#datasend').focus().click();	        	
+		}
+		}); 
 	});
 
 
@@ -64,8 +64,6 @@
 		});
 	});
 </script>
-
-
 <head>
 <div style="float:left;height:500px;width:100px;border-right:5px solid red;">
 	<b>USERS</b>

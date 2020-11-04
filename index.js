@@ -4,14 +4,12 @@ var app= express();
 var server=app.listen(3000, ()=>{console.log("'server started at 3000'")});
 var io= require("socket.io")(server);
 
-
 app.get('/', (req, res)=> {
   res.sendFile(__dirname + '/index.html');
 });
 
 // empty array used to store connected users
 var usernames = {};
-
 
 //socket on,event emitter 
 io.sockets.on('connection', function (socket) {
